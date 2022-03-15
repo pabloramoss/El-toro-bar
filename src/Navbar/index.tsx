@@ -7,7 +7,6 @@ import {
   Drawer, 
   DrawerBody, 
   DrawerContent, 
-  DrawerHeader, 
   DrawerOverlay, 
   useDisclosure, 
   DrawerCloseButton, 
@@ -19,16 +18,23 @@ import {
   useToast,
   Divider,
   Heading,
-  HStack
+  HStack,
+  Badge,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs
 } from "@chakra-ui/react"
-import { FaReceipt, FaUtensils, FaUserTie } from 'react-icons/fa';
+import { FaReceipt, FaUserTie } from 'react-icons/fa';
 import OrderContext from "../../context/OrderContext"
 import { IProduct } from '../types/types';
 import FoodItem from '../Food/FoodItem';
 import parseCurrency from '../Food/parseCurrency';
+import FoodItemTotalOrder from '../Food/FoodItemTotalOrder';
 
 const Navbar: React.FC = ()=> {
-  const {currentOrder} = useContext(OrderContext)
+  const { currentOrder, setCurrentOrder, handleAddToTotalOrder, totalOrder } = useContext(OrderContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
   const sendOrder = ()=> {
@@ -39,30 +45,31 @@ const Navbar: React.FC = ()=> {
       duration: 4000,
       isClosable: true,
     })
+    currentOrder.map((item: IProduct)=> handleAddToTotalOrder(item))
+    setCurrentOrder([])
     onClose()
   }
   const getTotalItems = ((items: IProduct[]) => items.reduce((counter, item) => counter + item.amount, 0));
   const subtotalPrice = ((items: IProduct[]) => items.reduce((counter, item) => counter + item.amount * item.price, 0));
-  const totalPrice = ((items: IProduct[]) => items.reduce((counter, item) => ((counter + item.amount * item.price)), 0)); //agregar precio de totalOrder
+  const totalPrice = ((items: IProduct[]) => items.reduce((counter, item) => ((counter + item.amount * item.price)), 0));
 
   return(
     <Stack position="fixed" w="100%" bottom={0} bg="teal" h="8vh">
       <Stack w="100%" h="100%" direction="row" alignItems="center" justifyContent="space-around">
-        <Stack alignItems="center" spacing={0}>
-          <Icon p={2} color="white" h={8} w={8} as={FaUtensils} />
-          <Text fontSize={10} fontWeight={700} color="gray.300">Menu</Text>
-        </Stack>
         <Stack>
           <Menu placement='top'>
-            <MenuButton bg="teal">
-              <Stack spacing={0}>
-                <Icon onClick={onOpen} p={2} rounded={10} color="white" h={8} w={8} as={FaUserTie} />
+            <MenuButton as={Button} bg="teal" colorScheme="teal" p={0}>
+              <Stack spacing={0} alignItems="center" >
+                <Icon onClick={onOpen} rounded={10} color="white" h={5} w={5} as={FaUserTie} p={0} />
                 <Text fontSize={10} fontWeight={700} color="gray.300">Mozo</Text>
               </Stack>
             </MenuButton>
-            <MenuList>
+            <MenuList bg="teal.50">
               <Stack direction='row'>
-                <MenuItem w="50%" textAlign="center"      
+                <MenuItem 
+                  _focus={{bg: "teal.50"}}
+                  w="50%" 
+                  textAlign="center"
                   onClick={() =>
                     toast({
                       title: 'Llamando al mozo',
@@ -73,57 +80,76 @@ const Navbar: React.FC = ()=> {
                       isClosable: true,
                     })
                   }>Llamar al mozo</MenuItem>
-                <MenuItem>Pedir la cuenta</MenuItem>
+                <MenuItem
+                  _focus={{bg: "teal.50"}}
+                  w="50%"
+                  onClick={() =>
+                    toast({
+                      title: 'Pidiendo la cuenta',
+                      description: "En breve el mozo pasará a cobrar",
+                      status: 'success',
+                      position: 'top',
+                      duration: 4000,
+                      isClosable: true,
+                    })
+                  }>Pedir la cuenta</MenuItem>
               </Stack>
             </MenuList>
           </Menu>
         </Stack>
         <Stack alignItems="center" spacing={0}>
-          <Icon 
-            onClick={onOpen} 
-            p={2} 
-            rounded={10} 
-            color="white" 
-            h={8} 
-            w={8} 
-            as={FaReceipt} 
-          />
-          <Text fontSize={10} fontWeight={700} color="gray.300">Cuenta</Text>
+          <Button bg="teal" onClick={onOpen} colorScheme="teal" p={0}>
+            <Stack spacing={0} alignItems="center">
+              <Icon rounded={10} color="white" h={5} w={5} as={FaReceipt} p={0} />
+              <Text fontSize={10} fontWeight={700} color="gray.300">Cuenta</Text>
+              {(getTotalItems(currentOrder)
+                ? <Badge position="absolute" top={0} bg="red" rounded="full" color="white" px={2}>{getTotalItems(currentOrder)}</Badge> 
+                : "" )}
+            </Stack>
+          </Button>
         </Stack>
       </Stack>
       <Drawer size="md" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton color="white" />
-          <DrawerHeader 
-            color='white' 
-            bg="teal" 
-            textAlign="center" 
-            fontSize={25}
-          >Tu pedido</DrawerHeader>
           <DrawerBody color='white' bg="teal">
-            <Stack spacing={4}>
-              {currentOrder.map((product: IProduct) => <FoodItem key={product.title} product={product} />)}
-            </Stack>
+            <Tabs variant='enclosed' colorScheme='gray'>
+              <TabList>
+                <Tab color="teal.100" bg="teal.400" _selected={{border: "solid 1px", color: 'white', bg: 'teal' }}>Pedido actual</Tab>
+                <Tab color="teal.100" bg="teal.400" _selected={{border: "solid 1px", color: 'white', bg: 'teal' }}>Pedido total</Tab>
+              </TabList>
+              <TabPanels p={0}>
+                <TabPanel mt={4} p={0}>
+                  <Stack spacing={4}>
+                    {(currentOrder.length > 0) ? currentOrder.map((product: IProduct) => <FoodItem key={product.title} product={product} />) : <Heading opacity={0.7} fontSize="md" textAlign="center">Agregue productos a su pedido</Heading> }
+                  </Stack>
+                </TabPanel>
+                <TabPanel mt={4} p={0}>
+                  <Stack spacing={4}>
+                    {totalOrder.map((product: IProduct) => <FoodItemTotalOrder key={product.title} product={product} />)}
+                  </Stack>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </DrawerBody>
           <DrawerFooter justifyContent="center" bg="teal" flexDirection="column">
-            <Stack my={3} spacing={4} width="100%">
+            <Stack mb={3} spacing={4} width="100%">
               <HStack width="100%" justifyContent="space-between">
-                <Heading fontSize={18} opacity={0.6}>Subtotal:</Heading>
-                <Heading fontSize={18} opacity={0.6}>
+                <Heading fontSize={18} color="white" opacity={0.6}>Subtotal:</Heading>
+                <Heading fontSize={18} color="white" opacity={0.6}>
                   {parseCurrency(subtotalPrice(currentOrder))}
                 </Heading>
               </HStack>
               <Divider />
               <HStack width="100%" justifyContent="space-between">
-                <Heading fontSize={18} opacity={0.9}>Total:</Heading>
-                <Heading fontSize={18} opacity={0.9}>
-                  AR
-                  {parseCurrency(Math.trunc(totalPrice(currentOrder)))}
+                <Heading fontSize={18} opacity={0.9} color="white">Total:</Heading>
+                <Heading fontSize={18} opacity={0.9} color="white">
+                  {parseCurrency(Math.trunc(totalPrice(totalOrder)))}
                 </Heading>
               </HStack>
             </Stack>
-            <Button colorScheme="gray" w="100%" onClick={sendOrder}>Ordenar</Button>
+            <Button isDisabled={(currentOrder.length > 0) ? false : true} colorScheme="gray" w="100%" onClick={sendOrder}>Ordenar</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

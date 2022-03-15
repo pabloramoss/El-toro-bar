@@ -10,11 +10,6 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     <ChakraProvider>
       <OrderProvider>
         <CategoryProvider>
-          <VStack my={6} spacing={0}>
-            <Image rounded="full" src="https://via.placeholder.com/100" alt="bar logo" />
-            <Heading fontSize="xl">EL TORO</Heading>
-            <Text fontSize="sm">Restaurant a cielo abierto</Text>
-          </VStack>
           <Component {...pageProps} />
         </CategoryProvider>
       </OrderProvider>

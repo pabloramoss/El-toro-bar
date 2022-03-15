@@ -7,6 +7,7 @@ import api from "../src/Food/api"
 import { GetStaticProps } from 'next';
 import { IProduct} from "../src/types/types"
 import CategoryContext from "../context/CategoryContext"
+import Header from "../src/Header/index"
 
 interface Props {
   products: IProduct[];
@@ -20,7 +21,8 @@ const Order: React.FC<Props> = ({products})=> {
   const filterProducts = (category === "") ? products : products.filter(product => product.category === category)
 
   return(
-    <Stack>
+    <Stack spacing={0}>
+      <Header />
       <Container
         bg="teal.50"
         boxShadow='lg'
@@ -42,8 +44,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const products = await api.list();
 
   return {
-    revalidate: 3600 * 24,
-    props: {
+/*     revalidate: 3600 * 24,
+ */    props: {
       products,
     },
   };

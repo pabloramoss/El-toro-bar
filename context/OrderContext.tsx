@@ -1,12 +1,28 @@
 import { createContext, useState, useEffect } from "react"
 import { IProduct } from "../src/types/types"
-
 const OrderContext:any = createContext({})
 const OrderProvider: React.FC<React.ReactNode> = ({children}) => {
   const [currentOrder, setCurrentOrder] = useState<IProduct[]>([])
+  const [totalOrder, setTotalOrder] = useState<IProduct[]>([])
+
   useEffect(()=>{
     console.log("order",currentOrder)
-  },[currentOrder])
+    console.log("total",totalOrder)
+  },[currentOrder, totalOrder])
+  
+  const handleAddToTotalOrder = (clickedItem: IProduct) => {
+    setTotalOrder((prev) => {
+      // 1. Is the item already added in the order?
+      const isItemInOrder = prev.find((item) => item.title === clickedItem.title);
+      if (isItemInOrder) {
+        return prev.map((item) => (item.title === clickedItem.title
+          ? { ...item, amount: item.amount + 1 }
+          : item));
+      }
+      // First time the item is added
+      return [...prev, { ...clickedItem, amount: 1 }];
+    });
+  };
   
   const handleAddToOrder = (clickedItem: IProduct) => {
     setCurrentOrder((prev) => {
@@ -37,8 +53,11 @@ const OrderProvider: React.FC<React.ReactNode> = ({children}) => {
   const data = {
     currentOrder, 
     setCurrentOrder,
+    totalOrder,
+    setTotalOrder,
     handleAddToOrder,
     handleRemoveFromOrder,
+    handleAddToTotalOrder,
   }
   return (
     <OrderContext.Provider value={data}>{children}</OrderContext.Provider>
