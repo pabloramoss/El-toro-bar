@@ -16,11 +16,11 @@ const OrderProvider: React.FC<React.ReactNode> = ({children}) => {
       const isItemInOrder = prev.find((item) => item.title === clickedItem.title);
       if (isItemInOrder) {
         return prev.map((item) => (item.title === clickedItem.title
-          ? { ...item, amount: item.amount + 1 }
+          ? { ...item, amount: item.amount + clickedItem.amount }
           : item));
       }
       // First time the item is added
-      return [...prev, { ...clickedItem, amount: 1 }];
+      return [...prev, { ...clickedItem}];
     });
   };
   
