@@ -24,7 +24,8 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
+  Container
 } from "@chakra-ui/react"
 import { FaReceipt, FaUserTie } from 'react-icons/fa';
 import OrderContext from "../../context/OrderContext"
@@ -55,60 +56,58 @@ const Navbar: React.FC = ()=> {
 
   return(
     <Stack position="fixed" w="100%" bottom={0} bg="teal" h="8vh">
-      <Stack w="100%" h="100%" direction="row" alignItems="center" justifyContent="space-around">
-        <Stack>
-          <Menu placement='top'>
-            <MenuButton as={Button} bg="teal" colorScheme="teal" p={0}>
-              <Stack spacing={0} alignItems="center" >
-                <Icon onClick={onOpen} rounded={10} color="white" h={5} w={5} as={FaUserTie} p={0} />
-                <Text fontSize={10} fontWeight={700} color="gray.300">Mozo</Text>
+      <Container p={0} m={0} maxW="container.sm"h="100%" alignSelf="center">
+        <Stack w="100%" h="100%" direction="row" alignItems="center" justifyContent="space-around">
+            <Menu placement='top'>
+              <MenuButton as={Button} bg="teal" colorScheme="teal" p={0}>
+                <Stack spacing={0} alignItems="center" >
+                  <Icon onClick={onOpen} rounded={10} color="white" h={5} w={5} as={FaUserTie} p={0} />
+                  <Text fontSize={10} fontWeight={700} color="gray.300">Mozo</Text>
+                </Stack>
+              </MenuButton>
+              <MenuList bg="teal.50">
+                <Stack direction='row'>
+                  <MenuItem 
+                    _focus={{bg: "teal.50"}}
+                    w="50%" 
+                    textAlign="center"
+                    onClick={() =>
+                      toast({
+                        title: 'Llamando al mozo',
+                        description: "En unos momentos será atendido",
+                        status: 'success',
+                        position: 'top',
+                        duration: 4000,
+                        isClosable: true,
+                      })
+                    }>Llamar al mozo</MenuItem>
+                  <MenuItem
+                    _focus={{bg: "teal.50"}}
+                    w="50%"
+                    onClick={() =>
+                      toast({
+                        title: 'Pidiendo la cuenta',
+                        description: "En breve el mozo pasará a cobrar",
+                        status: 'success',
+                        position: 'top',
+                        duration: 4000,
+                        isClosable: true,
+                      })
+                    }>Pedir la cuenta</MenuItem>
+                </Stack>
+              </MenuList>
+            </Menu>
+            <Button bg="teal" onClick={onOpen} colorScheme="teal" p={0}>
+              <Stack spacing={0} alignItems="center">
+                <Icon rounded={10} color="white" h={5} w={5} as={FaReceipt} p={0} />
+                <Text fontSize={10} fontWeight={700} color="gray.300">Cuenta</Text>
+                {(getTotalItems(currentOrder)
+                  ? <Badge position="absolute" top={0} bg="red" rounded="full" color="white" px={2}>{getTotalItems(currentOrder)}</Badge> 
+                  : "" )}
               </Stack>
-            </MenuButton>
-            <MenuList bg="teal.50">
-              <Stack direction='row'>
-                <MenuItem 
-                  _focus={{bg: "teal.50"}}
-                  w="50%" 
-                  textAlign="center"
-                  onClick={() =>
-                    toast({
-                      title: 'Llamando al mozo',
-                      description: "En unos momentos será atendido",
-                      status: 'success',
-                      position: 'top',
-                      duration: 4000,
-                      isClosable: true,
-                    })
-                  }>Llamar al mozo</MenuItem>
-                <MenuItem
-                  _focus={{bg: "teal.50"}}
-                  w="50%"
-                  onClick={() =>
-                    toast({
-                      title: 'Pidiendo la cuenta',
-                      description: "En breve el mozo pasará a cobrar",
-                      status: 'success',
-                      position: 'top',
-                      duration: 4000,
-                      isClosable: true,
-                    })
-                  }>Pedir la cuenta</MenuItem>
-              </Stack>
-            </MenuList>
-          </Menu>
+            </Button>
         </Stack>
-        <Stack alignItems="center" spacing={0}>
-          <Button bg="teal" onClick={onOpen} colorScheme="teal" p={0}>
-            <Stack spacing={0} alignItems="center">
-              <Icon rounded={10} color="white" h={5} w={5} as={FaReceipt} p={0} />
-              <Text fontSize={10} fontWeight={700} color="gray.300">Cuenta</Text>
-              {(getTotalItems(currentOrder)
-                ? <Badge position="absolute" top={0} bg="red" rounded="full" color="white" px={2}>{getTotalItems(currentOrder)}</Badge> 
-                : "" )}
-            </Stack>
-          </Button>
-        </Stack>
-      </Stack>
+      </Container>
       <Drawer size="md" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>

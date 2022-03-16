@@ -21,13 +21,13 @@ const Order: React.FC<Props> = ({products})=> {
   const filterProducts = (category === "") ? products : products.filter(product => product.category === category)
 
   return(
-    <Stack spacing={0}>
+    <Stack spacing={0} justifyContent="center" bg="teal.50">
       <Header />
       <Container
         bg="teal.50"
-        boxShadow='lg'
-        maxW="container.xl"
+        maxW="container.sm"
         p={2}
+        alignSelf="center"
       >
         <Stack px={3} spacing={5} pb="10vh">
           <MenuCategories />
