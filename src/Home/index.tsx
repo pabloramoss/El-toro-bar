@@ -9,7 +9,6 @@ interface Props {
 
 const Home: React.FC<Props> = ({setTable})=> {
   const tables = Array.from({length: 10}, (_, i) => `Mesa ${i + 1}`)
-  console.log(typeof(setTable))
   const router = useRouter()
   const handleSubmit = (e:any) =>{
     e.preventDefault()
