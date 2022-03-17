@@ -4,6 +4,7 @@ const OrderContext:any = createContext({})
 const OrderProvider: React.FC<React.ReactNode> = ({children}) => {
   const [currentOrder, setCurrentOrder] = useState<IProduct[]>([])
   const [totalOrder, setTotalOrder] = useState<IProduct[]>([])
+  const [table, setTable] = useState("")
 
   useEffect(()=>{
     console.log("order",currentOrder)
@@ -53,6 +54,8 @@ const OrderProvider: React.FC<React.ReactNode> = ({children}) => {
   const data = {
     currentOrder, 
     setCurrentOrder,
+    table,
+    setTable,
     totalOrder,
     setTotalOrder,
     handleAddToOrder,

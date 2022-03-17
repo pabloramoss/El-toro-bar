@@ -1,6 +1,6 @@
 import React from "react"
 import { AppProps } from "next/app"
-import { ChakraProvider, VStack, Image, Heading, Text } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import { OrderProvider } from "../context/OrderContext"
 import { CategoryProvider } from "../context/CategoryContext"
 

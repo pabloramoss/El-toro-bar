@@ -33,11 +33,15 @@ import { IProduct } from '../types/types';
 import FoodItem from '../Food/FoodItem';
 import parseCurrency from '../Food/parseCurrency';
 import FoodItemTotalOrder from '../Food/FoodItemTotalOrder';
+import orderSend from '../sendOrder';
 
 const Navbar: React.FC = ()=> {
-  const { currentOrder, setCurrentOrder, handleAddToTotalOrder, totalOrder } = useContext(OrderContext)
+  const { currentOrder, setCurrentOrder, handleAddToTotalOrder, totalOrder, table } = useContext(OrderContext)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
+  const getTotalItems: (items: IProduct[]) => number = ((items) => items.reduce((counter, item) => counter + item.amount, 0));
+  const totalPrice: (items: IProduct[]) => number = ((items) => items.reduce((counter, item) => counter + item.amount * item.price, 0));
+
   const sendOrder = ()=> {
     toast({
       title: 'Orden enviada',
@@ -48,11 +52,23 @@ const Navbar: React.FC = ()=> {
     })
     currentOrder.map((item: IProduct)=> handleAddToTotalOrder(item))
     setCurrentOrder([])
+    const text: string = currentOrder.reduce((message: string, product: IProduct) => message.concat(`* ${product.title} - x${product.amount}\n`), '').concat(`\nsubtotal: ${parseCurrency(totalPrice(currentOrder))}\n`).concat(`\n${table}`);
+    orderSend(text)
     onClose()
   }
-  const getTotalItems = ((items: IProduct[]) => items.reduce((counter, item) => counter + item.amount, 0));
-  const subtotalPrice = ((items: IProduct[]) => items.reduce((counter, item) => counter + item.amount * item.price, 0));
-  const totalPrice = ((items: IProduct[]) => items.reduce((counter, item) => ((counter + item.amount * item.price)), 0));
+
+  const sendCount = ()=>{
+    toast({
+      title: 'Pidiendo la cuenta',
+      description: "En breve el mozo pasará a cobrar",
+      status: 'success',
+      position: 'top',
+      duration: 4000,
+      isClosable: true,
+    })
+    const text: string = totalOrder.reduce((message: string, product: IProduct) => message.concat(`* ${product.title} - x${product.amount}\n`), '').concat(`\nTotal: ${parseCurrency(totalPrice(totalOrder))}\n`).concat(`\n${table}`);
+    orderSend(text)
+  }
 
   return(
     <Stack position="fixed" w="100%" bottom={0} bg="gray.700" h="8vh">
@@ -84,16 +100,8 @@ const Navbar: React.FC = ()=> {
                   <MenuItem
                     _focus={{bg: "gray.200"}}
                     w="48%"
-                    onClick={() =>
-                      toast({
-                        title: 'Pidiendo la cuenta',
-                        description: "En breve el mozo pasará a cobrar",
-                        status: 'success',
-                        position: 'top',
-                        duration: 4000,
-                        isClosable: true,
-                      })
-                    }>Pedir la cuenta</MenuItem>
+                    onClick={sendCount}
+                    >Pedir la cuenta</MenuItem>
                 </Stack>
               </MenuList>
             </Menu>
@@ -137,7 +145,7 @@ const Navbar: React.FC = ()=> {
               <HStack width="100%" justifyContent="space-between">
                 <Heading fontSize={18} color="white" opacity={0.6}>Subtotal:</Heading>
                 <Heading fontSize={18} color="white" opacity={0.6}>
-                  {parseCurrency(subtotalPrice(currentOrder))}
+                  {parseCurrency(totalPrice(currentOrder))}
                 </Heading>
               </HStack>
               <Divider />
