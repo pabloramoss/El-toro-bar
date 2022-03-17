@@ -14,15 +14,15 @@ const Home: React.FC = ()=> {
     console.log(selectedTable)
   }
   return(
-    <Stack bg="teal.50" alignItems="center" h="100vh">
+    <Stack bg="gray.900" alignItems="center" h="100vh">
       <Header />
-      <Heading fontSize={24} textAlign="center">Bienvenido a El Torito Bar</Heading>
+      <Heading fontSize={24} textAlign="center" color="orange.400">Bienvenido a El Torito Bar</Heading>
       <form onSubmit={handleSubmit}>
         <Stack spacing={6} mt={5} w="200px">
           <Select bg="white" isRequired onChange={(e)=>setSelectedTable(e.target.value)} placeholder='Selecciona una mesa'>
             {tables.map(table=><option key={table} value={table}>{table}</option>)}
           </Select>
-          <Button colorScheme="teal" w="200px" type='submit'>Confirmar mesa</Button>
+          <Button colorScheme="orange" w="200px" type='submit'>Confirmar mesa</Button>
         </Stack>
       </form>
     </Stack>

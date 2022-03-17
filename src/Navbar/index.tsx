@@ -55,20 +55,20 @@ const Navbar: React.FC = ()=> {
   const totalPrice = ((items: IProduct[]) => items.reduce((counter, item) => ((counter + item.amount * item.price)), 0));
 
   return(
-    <Stack position="fixed" w="100%" bottom={0} bg="teal" h="8vh">
+    <Stack position="fixed" w="100%" bottom={0} bg="gray.700" h="8vh">
       <Container p={0} m={0} maxW="container.sm"h="100%" alignSelf="center">
         <Stack w="100%" h="100%" direction="row" alignItems="center" justifyContent="space-around">
             <Menu placement='top'>
-              <MenuButton as={Button} bg="teal" colorScheme="teal" p={0}>
+              <MenuButton as={Button} bg="gray.700" colorScheme="black" p={0}>
                 <Stack spacing={0} alignItems="center" >
-                  <Icon onClick={onOpen} rounded={10} color="white" h={5} w={5} as={FaUserTie} p={0} />
-                  <Text fontSize={10} fontWeight={700} color="gray.300">Mozo</Text>
+                  <Icon onClick={onOpen} rounded={10} color="gray.200" h={5} w={5} as={FaUserTie} p={0} />
+                  <Text fontSize={10} fontWeight={700} color="gray.200">Mozo</Text>
                 </Stack>
               </MenuButton>
-              <MenuList bg="teal.50">
+              <MenuList bg="gray.200">
                 <Stack direction='row'>
                   <MenuItem 
-                    _focus={{bg: "teal.50"}}
+                    _focus={{bg: "gray.200"}}
                     w="50%" 
                     textAlign="center"
                     onClick={() =>
@@ -82,8 +82,8 @@ const Navbar: React.FC = ()=> {
                       })
                     }>Llamar al mozo</MenuItem>
                   <MenuItem
-                    _focus={{bg: "teal.50"}}
-                    w="50%"
+                    _focus={{bg: "gray.200"}}
+                    w="48%"
                     onClick={() =>
                       toast({
                         title: 'Pidiendo la cuenta',
@@ -97,10 +97,10 @@ const Navbar: React.FC = ()=> {
                 </Stack>
               </MenuList>
             </Menu>
-            <Button bg="teal" onClick={onOpen} colorScheme="teal" p={0}>
+            <Button bg="gray.700" onClick={onOpen} colorScheme="black" p={0}>
               <Stack spacing={0} alignItems="center">
-                <Icon rounded={10} color="white" h={5} w={5} as={FaReceipt} p={0} />
-                <Text fontSize={10} fontWeight={700} color="gray.300">Cuenta</Text>
+                <Icon rounded={10} color="gray.200" h={5} w={5} as={FaReceipt} p={0} />
+                <Text fontSize={10} fontWeight={700} color="gray.200">Cuenta</Text>
                 {(getTotalItems(currentOrder)
                   ? <Badge position="absolute" top={0} bg="red" rounded="full" color="white" px={2}>{getTotalItems(currentOrder)}</Badge> 
                   : "" )}
@@ -112,11 +112,11 @@ const Navbar: React.FC = ()=> {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton color="white" />
-          <DrawerBody color='white' bg="teal">
-            <Tabs variant='enclosed' colorScheme='gray'>
+          <DrawerBody color='white' bg="gray.900">
+            <Tabs variant='enclosed'>
               <TabList>
-                <Tab color="teal.100" bg="teal.400" _selected={{border: "solid 1px", color: 'white', bg: 'teal' }}>Pedido actual</Tab>
-                <Tab color="teal.100" bg="teal.400" _selected={{border: "solid 1px", color: 'white', bg: 'teal' }}>Pedido total</Tab>
+                <Tab color="gray.300" bg="gray.700" _selected={{border: "solid 1px", color: 'orange.400', bg: 'gray.900' }}>Pedido actual</Tab>
+                <Tab color="gray.300" bg="gray.700" _selected={{border: "solid 1px", color: 'orange.400', bg: 'gray.900' }}>Pedido total</Tab>
               </TabList>
               <TabPanels p={0}>
                 <TabPanel mt={4} p={0}>
@@ -132,7 +132,7 @@ const Navbar: React.FC = ()=> {
               </TabPanels>
             </Tabs>
           </DrawerBody>
-          <DrawerFooter justifyContent="center" bg="teal" flexDirection="column">
+          <DrawerFooter justifyContent="center" bg="gray.900" flexDirection="column">
             <Stack mb={3} spacing={4} width="100%">
               <HStack width="100%" justifyContent="space-between">
                 <Heading fontSize={18} color="white" opacity={0.6}>Subtotal:</Heading>
@@ -142,13 +142,13 @@ const Navbar: React.FC = ()=> {
               </HStack>
               <Divider />
               <HStack width="100%" justifyContent="space-between">
-                <Heading fontSize={18} opacity={0.9} color="white">Total:</Heading>
-                <Heading fontSize={18} opacity={0.9} color="white">
+                <Heading fontSize={18} opacity={0.9} color="orange.400">Total:</Heading>
+                <Heading fontSize={18} opacity={0.9} color="orange.400">
                   {parseCurrency(Math.trunc(totalPrice(totalOrder)))}
                 </Heading>
               </HStack>
             </Stack>
-            <Button isDisabled={(currentOrder.length > 0) ? false : true} colorScheme="gray" w="100%" onClick={sendOrder}>Ordenar</Button>
+            <Button isDisabled={(currentOrder.length > 0) ? false : true} colorScheme="orange" w="100%" onClick={sendOrder}>Ordenar</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

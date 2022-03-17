@@ -8,7 +8,7 @@ const MenuCategories: React.FC = ()=> {
 
   return(
     <Stack>
-      <Heading fontSize="lg">Haz tu pedido:</Heading>
+      <Heading fontSize="lg" color="white">Haz tu pedido:</Heading>
       <Select 
         bg="white" 
         mt={10} 
