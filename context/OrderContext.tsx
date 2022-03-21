@@ -1,15 +1,12 @@
 import { createContext, useState, useEffect } from "react"
 import { IProduct } from "../src/types/types"
+
 const OrderContext:any = createContext({})
+
 const OrderProvider: React.FC<React.ReactNode> = ({children}) => {
   const [currentOrder, setCurrentOrder] = useState<IProduct[]>([])
   const [totalOrder, setTotalOrder] = useState<IProduct[]>([])
   const [table, setTable] = useState("")
-
-  useEffect(()=>{
-    console.log("order",currentOrder)
-    console.log("total",totalOrder)
-  },[currentOrder, totalOrder])
   
   const handleAddToTotalOrder = (clickedItem: IProduct) => {
     setTotalOrder((prev) => {

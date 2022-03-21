@@ -15,7 +15,7 @@ interface Props {
   products: IProduct[];
 }
 
-const Order: React.FC<Props> = ({products})=> {
+const Order: React.FC<Props> = ({ products })=> {
   const { category } = useContext(CategoryContext)
   const { table } = useContext(OrderContext)
   const router = useRouter()

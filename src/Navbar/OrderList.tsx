@@ -1,6 +1,20 @@
 import {
-  Button, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, Heading,
-  HStack, Icon, Stack, useDisclosure, VStack,
+  Button, 
+  Divider, 
+  Drawer, 
+  DrawerBody, 
+  DrawerCloseButton, 
+  DrawerContent, 
+  DrawerFooter, 
+  DrawerHeader, 
+  DrawerOverlay, 
+  Flex, 
+  Heading,
+  HStack, 
+  Icon, 
+  Stack, 
+  useDisclosure, 
+  VStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import React, { useContext } from 'react';
@@ -11,7 +25,7 @@ import OrderContext from '../../context/OrderContext';
 import { IProduct } from '../types/types';
 
 function OrderList() {
-  const {currentOrder} = useContext(OrderContext)
+  const { currentOrder } = useContext(OrderContext)
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getTotalItems = ((items: IProduct[]) => items.reduce((counter, item) => counter + item.amount, 0));

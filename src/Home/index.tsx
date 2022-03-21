@@ -7,7 +7,7 @@ interface Props {
   setTable: any;
 }
 
-const Home: React.FC<Props> = ({setTable})=> {
+const Home: React.FC<Props> = ({ setTable })=> {
   const tables = Array.from({length: 10}, (_, i) => `Mesa ${i + 1}`)
   const router = useRouter()
   const handleSubmit = (e:any) =>{

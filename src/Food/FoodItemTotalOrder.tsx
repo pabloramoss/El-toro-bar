@@ -6,7 +6,7 @@ import parseCurrency from './parseCurrency';
 interface Props {
   product: IProduct;
 }
-const FoodItemTotalOrder: React.FC<Props> = ({product})=> {
+const FoodItemTotalOrder: React.FC<Props> = ({ product })=> {
 
   return(
     <Stack bg='gray.700' direction="row" rounded={10} boxShadow="lg" w="100%"  h="120px">

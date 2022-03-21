@@ -1,5 +1,5 @@
 import { Menu, MenuButton, Button, MenuList, MenuItem } from '@chakra-ui/react';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { FaChevronCircleDown } from 'react-icons/fa';
 
 const Tables: React.FC = ()=> {
