@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    CHAT_ID: process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID,
-    BOT_TOKEN: process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN,
+    CHAT_ID: process.env.TELEGRAM_CHAT_ID,
+    BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
   }
 }
 
